@@ -29,7 +29,8 @@ for my $i (1..$num){
 	# creates starter pass to be changed 'it240username'
 	system("echo $username:it240$username | chpasswd");
 	# forces user to change on first login
-	system("chage -d 0 $username");
+# this is causing issues in putty
+#	system("chage -d 0 $username");
 	print "$username created.\n";
 }
 
