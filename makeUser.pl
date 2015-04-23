@@ -1,7 +1,17 @@
 #!/usr/bin/perl
 
+# prevents warning, use of smartmatch operator ~~ in line 30/58
+no warnings 'experimental::smartmatch';
+
 print "How many users do you want to create?: ";
 chomp($num=<>);
+
+# checks for valid input
+while ($num < 1 or $num >50){
+	print "Please enter a valid number between 1-50: ";
+	chomp($num=<>);
+}
+
 print "Creating $num users...\n";
 
 # creates students if it doesn't exist
@@ -10,10 +20,17 @@ system ("groupadd -f students");
 # gets student names already created, split to array
 my $students = `members students`;
 my @usernames = split / /, $students;
+foreach (@usernames){chomp($_);}
 
-# makes sure students aren't overwritten
+# creates users
 for my $i (1..$num){
 	my $username = "group$i";
+	
+	# next if username already exists in students group
+	if ($username ~~ @usernames){
+		print "$username already exists\n";
+		next;
+	}
 	print "User '$username' being created...\n"; 
 
 	# makes home dir if not existing, creates user
@@ -38,4 +55,3 @@ for my $i (1..$num){
 
 	print "$username created.\n";
 }
-
