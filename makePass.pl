@@ -7,14 +7,26 @@ my %userHash;
 
 # create and set passwords
 foreach(@usernames){
+
+	# gets student from array
 	my $student = $_;
 	chomp $student;
-	my @chars = ('a'..'z','A'..'Z','0'..'9','!','$','_');
+
+	# password is random a-z,A-Z,0-9,!,$,_, excludes lower l
+	my @chars = ('a'..'k','m'..'z','A'..'Z','0'..'9','!','$','_');
 	my $pass;
+	
+	# cats a random char from @chars
 	foreach(1..8){
 		$pass .= $chars[rand @chars];
 	}
+	
+	# sets pass as value for username key in hash
 	$userHash{$student} = $pass;
+
+	# sets pass
+	system("echo $student:$pass | chpasswd");
+	
 }
 
 # open file for temporary password storage
