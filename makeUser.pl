@@ -3,6 +3,31 @@
 # prevents warning, use of smartmatch operator ~~ in line 30/58
 no warnings 'experimental::smartmatch';
 
+print "Would you like to make a new section?\n";
+print "(y/n): ";
+my $secChoice = <>;
+chomp $secChoice;
+
+while ($secChoice !~ /^y$|^n$/){
+	print "Please choose 'y' or 'n': ";
+	$secChoice = <>;
+	chomp $secChoice;
+}
+
+# creates group if it doesn't exist
+if ($secChoice eq 'y'){
+	print "Please enter a section name: ";
+	$secName = <>;
+	chomp $secName;
+	system ("groupadd -f $secName");
+}
+
+if ($secChoice eq 'n'){
+	print "Please enter a section name: ";
+	$secName = <>;
+	chomp $secName;
+}	
+
 print "How many users do you want to create?: ";
 chomp($num=<>);
 
@@ -14,11 +39,8 @@ while ($num < 1 or $num >50){
 
 print "Creating $num users...\n";
 
-# creates students if it doesn't exist
-system ("groupadd -f students");
-
 # gets student names already created, split to array
-my $students = `members students`;
+my $students = `members $secName`;
 my @usernames = split / /, $students;
 foreach (@usernames){chomp($_);}
 
@@ -35,7 +57,7 @@ for my $i (1..$num){
 
 	# makes home dir if not existing, creates user
 	# adds to students group, disable shell access
-	system("useradd -g students -m -d /home/$username -s /sbin/nologin $username");
+	system("useradd -g $secChoice -m -d /home/$username -s /sbin/nologin $username");
 
 	#creates groups public_html directory / index.html
 	my $directory = "/home/$username/public_html";
