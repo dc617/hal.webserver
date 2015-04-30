@@ -19,6 +19,11 @@ if ($secChoice eq 'y'){
 	print "Please enter a section name: ";
 	$secName = <>;
 	chomp $secName;
+	while ($secName !~ /[a-zA-Z0-9]/){
+		print "Please enter a name that only contains letters and numbers: ";
+		$secName = <>;
+		chomp $secName;
+	}	
 	system ("groupadd -f $secName");
 }
 
@@ -26,6 +31,11 @@ if ($secChoice eq 'n'){
 	print "Please enter a section name: ";
 	$secName = <>;
 	chomp $secName;
+	while ($secName !~ /[a-zA-Z0-9]/){
+		print "Please enter a name that only contains letters and numbers: ";
+		$secName = <>;
+		chomp $secName;
+	}	
 }	
 
 print "How many users do you want to create?: ";
