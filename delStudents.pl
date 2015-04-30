@@ -23,6 +23,15 @@ if ($zipChoice eq 'y'){
 # deletion of students
 if ($zipChoice eq 'n'){
 
+	print "Please enter a section name: ";
+	$secName = <>;
+	chomp $secName;
+	while ($secName !~ /[a-zA-Z0-9]/){
+		print "Please enter a name that only contains letters and numbers: ";
+		$secName = <>;
+		chomp $secName;
+	}
+
 	# makes sure deletion is intended
 	print "Are you sure you want to delete all students, and student directories?\n";
 	print "(y/n):";
@@ -36,15 +45,6 @@ if ($zipChoice eq 'n'){
 		chomp $deleteChoice;
 	}
 	
-	print "Please enter a section name: ";
-	$secName = <>;
-	chomp $secName;
-	while ($secName !~ /[a-zA-Z0-9]/){
-		print "Please enter a name that only contains letters and numbers: ";
-		$secName = <>;
-		chomp $secName;
-	}
-
 	# gets students group members, deletes student and entire home dir
 	if ($deleteChoice eq 'y'){
 		print "Deleting students and student directories...\n";
