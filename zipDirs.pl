@@ -1,5 +1,26 @@
 #!/usr/bin/perl
 
+# prevents warning, use of smartmatch operator ~~ in line ??/??
+no warnings 'experimental::smartmatch';
+
+# makes list of sections
+my @sections;
+open (my $fh, '<', "sections.txt") or die "section file error";
+while (my $row = <$fh>){
+	chomp $row;
+	push @sections, $row;
+}
+close $fh;
+
+print "\nPlease choose a section: ";
+$secName = <>;
+chomp $secName;
+while ($secName !~ @sections){
+	print "Please enter an existing section: ";
+	$secName = <>;
+	chomp $secName;
+}
+
 print "Do you want to get a .zip of all groups or a specific group?\n";
 print "(all/spec): ";
 my $zipScope = <>;
@@ -13,7 +34,7 @@ while ($zipScope !~ /^all$|^spec$/){
 }
 
 # get all student names, split to array
-my $students = `members students`;
+my $students = `members $secName`;
 my @usernames = split / /, $students;
 my $allStudents = '';
 foreach(@usernames){
@@ -35,9 +56,12 @@ if ($zipScope eq 'spec'){
 
 	print "Please enter a student group you would like a .zip archive of: ";
 	
-	# this should be checked against @usernames
 	my $specStudent = <>;
 	chomp $specStudent;
+	until ($specStudent ~~ @usernames){
+		print "Please enter an existing user: ";
+		chomp($specStudent=<>);
+	}
 	print "Please enter the desired name of your .zip archive: ";
 	my $zipName = <>;
 	chomp $zipName;

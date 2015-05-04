@@ -1,5 +1,23 @@
 #!/usr/bin/perl
 
+# makes list of sections
+my @sections;
+open (my $fh, '<', "sections.txt") or die "section file error";
+while (my $row = <$fh>){
+	chomp $row;
+	push @sections, $row;
+}
+
+close $fh;
+print "\nPlease choose a section: ";
+$secName = <>;
+chomp $secName;
+while ($secName !~ @sections){
+	print "Please enter an existing section: ";
+	$secName = <>;
+	chomp $secName;
+}
+
 print "Preparing to delete all students and student files...\n";
 print "Would you like to make a .zip archive before deleting students?:\n";
 print "(y/n): ";
@@ -22,15 +40,6 @@ if ($zipChoice eq 'y'){
 
 # deletion of students
 if ($zipChoice eq 'n'){
-
-	print "Please enter a section name: ";
-	$secName = <>;
-	chomp $secName;
-	while ($secName !~ /[a-zA-Z0-9]/){
-		print "Please enter a name that only contains letters and numbers: ";
-		$secName = <>;
-		chomp $secName;
-	}
 
 	# makes sure deletion is intended
 	print "Are you sure you want to delete all students, and student directories?\n";

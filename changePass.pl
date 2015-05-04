@@ -3,10 +3,28 @@
 # prevents warning, use of smartmatch operator ~~ in line ??/??
 no warnings 'experimental::smartmatch';
 
+# makes list of sections
+my @sections;
+open (my $fh, '<', "sections.txt") or die "section file error";
+while (my $row = <$fh>){
+	chomp $row;
+	push @sections, $row;
+}
+close $fh;
+
+print "\nPlease choose a section: ";
+$secName = <>;
+chomp $secName;
+while ($secName !~ @sections){
+	print "Please enter an existing section: ";
+	$secName = <>;
+	chomp $secName;
+}
+
 print "For which user would you like to change a password? ";
 
 # get student names
-my $students = `members students`;
+my $students = `members $secName`;
 my @usernames = split / /, $students;
 foreach (@usernames){
 	chomp $_;
