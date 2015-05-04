@@ -1,13 +1,30 @@
 #!/usr/bin/perl
 
-$filename = 'pass.txt.enc';
+# makes list of sections
+my @sections;
+open (my $fh, '<', "sections.txt") or die "section file error";
+while (my $row = <$fh>){
+	chomp $row;
+	push @sections, $row;
+}
+close $fh;
 
-# see if enc pass file exists
-if (-e $filename){
-	
-	# decrypts pass.txt.enc and creates passwords.txt
-	system ("openssl aes-256-cbc -d -a -in $filename -out passwords.txt");
+print "\nPlease choose a section: ";
+$secName = <>;
+chomp $secName;
+while ($secName !~ @sections){
+	print "Please enter an existing section: ";
+	$secName = <>;
+	chomp $secName;
 }
 
+$fileIn = $secName.'pass.txt.enc';
+$fileOut = $secName.'pass.txt';
 
-# maybe use cron to check for file and delete if left undeleted?
+# see if enc pass file exists
+if (-e $fileIn){
+	
+	# decrypts pass.txt.enc and creates passwords.txt
+	system ("openssl aes-256-cbc -d -a -in $fileIn -out $fileOut");
+}
+else {die "fileIn error";}
