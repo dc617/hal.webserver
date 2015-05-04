@@ -3,6 +3,16 @@
 # prevents warning, use of smartmatch operator ~~ in line 30/58
 no warnings 'experimental::smartmatch';
 
+# makes list of sections
+my @sections;
+open (my $fh, '<', "sections.txt") or die "section file error";
+while (my $row = <$fh>){
+	chomp $row;
+	push @sections, $row;
+}
+close $fh;
+		
+
 print "Would you like to make a new section?\n";
 print "(y/n): ";
 my $secChoice = <>;
@@ -15,27 +25,40 @@ while ($secChoice !~ /^y$|^n$/){
 }
 
 # creates group if it doesn't exist
+OUT:
 if ($secChoice eq 'y'){
 	print "Please enter a section name: ";
 	$secName = <>;
 	chomp $secName;
-	while ($secName !~ /[a-zA-Z0-9]/){
+	while ($secName =~ m/[^a-zA-Z0-9]/){
 		print "Please enter a name that only contains letters and numbers: ";
 		$secName = <>;
 		chomp $secName;
 	}	
+	if ($secName ~~ @sections){
+		$secChoice = 'n';
+		goto OUT;
+	}
 	system ("groupadd -f $secName");
+	open (my $fh, '>>', "sections.txt") or die "sections file error";
+	print $fh "$secName\n";
+	close $fh;
 }
 
 if ($secChoice eq 'n'){
-	print "Please enter a section name: ";
+	print "Here are the sections that exist already: ";
+	foreach (@sections){
+		print "$_ ";
+	}
+	print "\nPlease choose a section: ";
 	$secName = <>;
 	chomp $secName;
-	while ($secName !~ /[a-zA-Z0-9]/){
-		print "Please enter a name that only contains letters and numbers: ";
+	while ($secName !~ @sections){
+		print "Please enter an existing section: ";
 		$secName = <>;
 		chomp $secName;
-	}	
+	}
+		
 }	
 
 print "How many users do you want to create?: ";
@@ -56,7 +79,7 @@ foreach (@usernames){chomp($_);}
 
 # creates users
 for my $i (1..$num){
-	my $username = "group$i";
+	my $username = "$secName"."group$i";
 	
 	# next if username already exists in students group
 	if ($username ~~ @usernames){
@@ -67,7 +90,7 @@ for my $i (1..$num){
 
 	# makes home dir if not existing, creates user
 	# adds to students group, disable shell access
-	system("useradd -g $secChoice -m -d /home/$username -s /sbin/nologin $username");
+	system("useradd -g $secName -m -d /home/$username -s /sbin/nologin $username");
 
 	#creates groups public_html directory / index.html
 	my $directory = "/home/$username/public_html";
@@ -80,7 +103,7 @@ for my $i (1..$num){
 	close $fh;
 
 	# give student ownership of public_html dir
-	system("chown $username:students $directory");
+	system("chown $username:$secName $directory");
 
 	# chroot jails student to public_html only
 	system("chown root:root /home/$username");
