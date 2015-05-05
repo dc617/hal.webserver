@@ -8,27 +8,27 @@ MAKECHOICE:
 $choice = makeChoice();
 
 if ($choice == 1){
-	system("perl makeUser.pl");
+	system("perl ./toolScripts/makeUser.pl");
 	goto MAKECHOICE;
 }
 elsif ($choice == 2){
-	system("perl makePass.pl");
+	system("perl ./toolScripts/makePass.pl");
 	goto MAKECHOICE;
 }
 elsif ($choice == 3){
-	system("perl getPass.pl");
+	system("perl ./toolScripts/getPass.pl");
 	goto MAKECHOICE;
 }
 elsif ($choice == 4){
-	system("perl zipDirs.pl");
+	system("perl ./toolScripts/zipDirs.pl");
 	goto MAKECHOICE;
 }
 elsif ($choice == 5){
-	system("perl delStudents.pl");
+	system("perl ./toolScripts/delStudents.pl");
 	goto MAKECHOICE;
 }
 elsif ($choice == 6){
-	system("perl changePass.pl");
+	system("perl ./toolScripts/changePass.pl");
 	goto MAKECHOICE;
 }
 elsif ($choice == 7){

@@ -15,7 +15,7 @@ close $fh;
 print "\nPlease choose a section: ";
 $secName = <>;
 chomp $secName;
-while ($secName !~ @sections){
+until ($secName ~~ @sections){
 	print "Please enter an existing section: ";
 	$secName = <>;
 	chomp $secName;

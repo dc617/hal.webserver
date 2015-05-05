@@ -3,6 +3,8 @@
 # prevents warning, use of smartmatch operator ~~ in line 30/58
 no warnings 'experimental::smartmatch';
 
+system ("groupadd -f sftp");
+
 # makes list of sections
 my @sections;
 open (my $fh, '<', "sections.txt") or die "section file error";
@@ -53,7 +55,7 @@ if ($secChoice eq 'n'){
 	print "\nPlease choose a section: ";
 	$secName = <>;
 	chomp $secName;
-	while ($secName !~ @sections){
+	until ($secName ~~ @sections){
 		print "Please enter an existing section: ";
 		$secName = <>;
 		chomp $secName;
@@ -90,7 +92,7 @@ for my $i (1..$num){
 
 	# makes home dir if not existing, creates user
 	# adds to students group, disable shell access
-	system("useradd -g $secName -m -d /home/$username -s /sbin/nologin $username");
+	system("useradd -g $secName -G sftp -m -d /home/$username -s /usr/sbin/nologin $username");
 
 	#creates groups public_html directory / index.html
 	my $directory = "/home/$username/public_html";

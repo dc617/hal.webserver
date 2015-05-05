@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+# prevents warning, use of smartmatch operator ~~ in line 30/58
+no warnings 'experimental::smartmatch';
+
 # makes list of sections
 my @sections;
 open (my $fh, '<', "sections.txt") or die "section file error";
@@ -12,7 +15,7 @@ close $fh;
 print "\nPlease choose a section: ";
 $secName = <>;
 chomp $secName;
-while ($secName !~ @sections){
+until ($secName ~~ @sections){
 	print "Please enter an existing section: ";
 	$secName = <>;
 	chomp $secName;
@@ -29,7 +32,9 @@ foreach(@usernames){
 	# gets student from array
 	my $student = $_;
 	chomp $student;
+	
 
+	print "making pass for $student\n";
 	# password is random a-z,A-Z,0-9,!,$,_, excludes lower l
 	my @chars = ('a'..'k','m'..'z','A'..'Z','0'..'9','!','$','_');
 	my $pass;
@@ -43,7 +48,7 @@ foreach(@usernames){
 	$userHash{$student} = $pass;
 
 	# sets pass
-	system("echo $student:$pass | chpasswd");
+	system("echo $student:$pass | sudo chpasswd");
 	
 }
 

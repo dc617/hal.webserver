@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+# prevents warning, use of smartmatch operator ~~ in line 30/58
+no warnings 'experimental::smartmatch';
+
 # makes list of sections
 my @sections;
 open (my $fh, '<', "sections.txt") or die "section file error";
@@ -12,7 +15,7 @@ close $fh;
 print "\nPlease choose a section: ";
 $secName = <>;
 chomp $secName;
-while ($secName !~ @sections){
+until ($secName ~~ @sections){
 	print "Please enter an existing section: ";
 	$secName = <>;
 	chomp $secName;
