@@ -31,3 +31,5 @@ if (-e $fileIn){
 	system ("openssl aes-256-cbc -d -a -in $fileIn -out $fileOut");
 }
 else {die "fileIn error";}
+
+print "Your file should be in your current directory.\n";

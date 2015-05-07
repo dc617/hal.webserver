@@ -103,6 +103,7 @@ for my $i (1..$num){
 		or die "Error creating index.html for $username\n";
 		print $fh "Hello $username!";
 	close $fh;
+	system("chown $username:$secName $directory/index.html");
 
 	# give student ownership of public_html dir
 	system("chown $username:$secName $directory");

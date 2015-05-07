@@ -14,4 +14,3 @@ service apache2 restart
 mkdir /var/log/mod_evasive
 chown www-data:www-data /var/log/mod_evasive
 
-# change index.html from default apache2 page to IT240 home
