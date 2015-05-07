@@ -2,8 +2,6 @@
 
 A basic webserver for the IT 240 course.
 
-User creation, home directory creation, html directory intialization, and jailing.
+User creation and management.
 
-Zipping user directories en masse or specifically.
-
-User deletion, and user home deletion.
+User file archiving.
