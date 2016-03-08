@@ -1,6 +1,6 @@
 # hal.webserver
 
-A basic webserver for the IT 240 course.
+A basic webserver for an IT course.
 
 User creation and management.
 
